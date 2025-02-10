@@ -23,7 +23,7 @@ class AuthController extends Controller
             'name' => $fields['name'],
             'email' => $fields['email'],
             'password' => bcrypt($fields['password']),
-            'phone' => $fields['phone'],
+            'phone' => isset($fields['phone'] ) ?? $fields['phone'],
         ]);
 
 
