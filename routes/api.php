@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\Role;
 
 Route::get('/', function () {
     return response()->json([
@@ -8,6 +9,16 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get("/roles", function () {
+    $roles = Role::all();
+
+    return response()->json([
+        "success" => true,
+        "data" => [
+            "roles" => $roles
+        ]
+    ]);
+});
 //Load Route file on specific path
 Route::prefix('admin')->name('admin')->group(base_path('routes/admin.php'));
 Route::prefix('merchant')->name('merchant')->group(base_path('routes/merchant.php'));
