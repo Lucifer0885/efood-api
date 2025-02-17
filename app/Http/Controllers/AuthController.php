@@ -18,7 +18,7 @@ class AuthController extends Controller
         if($request->role && $request->role == 'admin') {
             return response()->json([
                 'status' => false,
-                'message' => 'page not found',
+                'message' => 'Page not found',
             ], 404);
         }
 
