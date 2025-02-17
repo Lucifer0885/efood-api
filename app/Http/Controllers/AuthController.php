@@ -6,12 +6,22 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Helpers\Device;
+use App\Enums\RoleCode;
+use App\Models\Role;
+use App\Models\RoleUser;
 
 class AuthController extends Controller
 {
 
     public function register(Request $request)
     {
+        if($request->role && $request->role == 'admin') {
+            return response()->json([
+                'status' => false,
+                'message' => 'page not found',
+            ], 404);
+        }
+
         $fields = $request->validate([
             'name' => 'required|string',
             'email' => 'required|string|unique:users,email',
@@ -26,6 +36,15 @@ class AuthController extends Controller
             'phone' => isset($fields['phone'] ) ?? $fields['phone'],
         ]);
 
+        if($request->role){
+            $role = Role::find(RoleCode::{$request->role});
+            if($role){
+                RoleUser::create([
+                    'user_id' => $user->id,
+                    'role_id' => $role->id,
+                ]);
+            }
+        }
 
         $token = $user->createToken(Device::tokenName())->plainTextToken;
 
@@ -48,10 +67,8 @@ class AuthController extends Controller
             'password' => 'required|string|min:6'
         ]);
 
-        // Check email
         $user = User::where('email', $fields['email'])->first();
 
-        // Check password
         if (!$user) {
             return response()->json([
                 'status' => false,
@@ -66,14 +83,25 @@ class AuthController extends Controller
             ], 401);
         }
 
+        if ($request->role){
+            $role = $user->roles()->where('role_id', RoleCode::{$request->role})->first();
+            if (!$role) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Unauthorized'
+                ], 401);
+            }        
+        }
+
         $token = $user->createToken(Device::tokenName())->plainTextToken;
 
         $response = [
             'status' => true,
-            'message' => 'User created successfully',
+            'message' => 'User login',
             'data' => [
               'user' => $user,
-              'token' => $token
+              'token' => $token,
+              'role' => $request->role,
             ]
         ];
 

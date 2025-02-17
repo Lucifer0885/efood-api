@@ -4,12 +4,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return response()->json([
-        'message' => 'Hello Merchant!'
+        'message' => 'Hello merchant!'
     ]);
 });
 
-Route::prefix('auth')->group(base_path('routes/auth.php'));
+Route::prefix('auth')->middleware("setAuthRole:merchant")->group(base_path('routes/auth.php'));
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', 'checkRole:merchant'])->group(function() {
 
 });

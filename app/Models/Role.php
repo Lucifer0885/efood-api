@@ -14,6 +14,12 @@ class Role extends Model
 
     public $translatable = ["name"];
 
+    public static $idByCode = [
+        'admin' => 1,
+        'merchant'=> 2,
+        'driver'=> 3
+    ];
+
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class);

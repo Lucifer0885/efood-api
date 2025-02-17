@@ -22,15 +22,16 @@ class UserRoleSeeder extends Seeder
         if($user){
             $this->command->info("User found {$user->name}");
         }else{
-            $this->command->info("User not found");
+            $this->command->warn("User not found");
             return;
         }
-        $role = Role::where("name->en","Admin")->first();
 
+        $this->command->info('Searching for role with name Admin');
+        $role = Role::where("name->en","Admin")->first();
         if($role){
             $this->command->info("Role found {$role->name}");
         }else{
-            $this->command->info('Role not found');
+            $this->command->warn('Role not found');
             return;
         }
 
