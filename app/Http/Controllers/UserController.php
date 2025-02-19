@@ -8,20 +8,7 @@ class UserController extends Controller
     {
         return response()->json($request->user());
     }
-    public function addresses(Request $request)
-    {
-        $addresses = $request->user()->addresses()->get();
 
-        $response = [
-            'status' => true,
-            'message' => 'User Addresses',
-            'data' => [
-              "addresses" => $addresses
-            ]
-        ];
-
-        return response()->json($response);
-    }
     public function tokens(Request $request)
     {
         $tokens = [];
