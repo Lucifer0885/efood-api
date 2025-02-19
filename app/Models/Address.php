@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Address extends Model
 {
@@ -13,13 +14,13 @@ class Address extends Model
         'postal_code',
         'latitude',
         'longitude',
-        'floor',
         'phone',
+        'floor',
         'door',
         'user_id',
     ];
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
