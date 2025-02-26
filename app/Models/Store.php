@@ -29,11 +29,23 @@ class Store extends Model
         'active' => 'boolean',
     ];
 
-    protected $appends = ['logo', 'cover'];
+    protected $hidden = ['pivot'];  
+
+    // protected $appends = ['logo', 'cover'];
 
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class);
+    }
+
+    public function productCategories()
+    {
+        return $this->hasMany(ProductCategory::class);
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
     }
 
     public function getLogoAttribute()
