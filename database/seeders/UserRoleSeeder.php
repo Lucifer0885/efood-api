@@ -6,7 +6,6 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Role;
-use Illuminate\Support\Facades\Log;
 
 class UserRoleSeeder extends Seeder
 {
@@ -15,27 +14,29 @@ class UserRoleSeeder extends Seeder
      */
     public function run(): void
     {
-        app()->setLocale("el");
+        app()->setLocale('el');
 
-        $this->command->info('Searching for user with email admin@test.com');
-        $user = User::whereEmail("admin@test.com")->first();
-        if($user){
-            $this->command->info("User found {$user->name}");
-        }else{
-            $this->command->warn("User not found");
+        $this->command->info("Searching for user with email 'george@pagonoudis.gr'...");
+        $user = User::whereEmail('george@pagonoudis.gr')->first();
+        if ($user) {
+            $this->command->info("User found! With name: " . $user->name);
+        } else {
+            $this->command->info("User not found!");
             return;
         }
 
-        $this->command->info('Searching for role with name Admin');
-        $role = Role::where("name->en","Admin")->first();
-        if($role){
-            $this->command->info("Role found {$role->name}");
-        }else{
-            $this->command->warn('Role not found');
+        $this->command->info("Searching for role with name 'Admin'...");
+        $role = Role::where('name->en', 'Admin')->first();
+        if ($role) {
+            $this->command->info("Role found! With name: {$role->name}");
+        } else {
+            $this->command->info("Role not found!");
             return;
         }
 
-        $this->command->info('Attaching role to user');
+        $this->command->info("Attaching role to user...");
         $user->roles()->attach($role->id);
+
+        $this->command->info("Role attached to user!");
     }
 }

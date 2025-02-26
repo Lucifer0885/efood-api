@@ -10,15 +10,9 @@ class Role extends Model
 {
     use HasTranslations;
 
-    protected $fillable = ["name"];
+    protected $fillable = ['name'];
 
-    protected $translatable = ["name"];
-
-    public static $idByCode = [
-        'admin' => 1,
-        'merchant'=> 2,
-        'driver'=> 3
-    ];
+    protected $translatable = ['name'];
 
     public function users(): BelongsToMany
     {

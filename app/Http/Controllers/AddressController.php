@@ -7,26 +7,29 @@ use Illuminate\Http\Request;
 
 class AddressController extends Controller
 {
-
+    /**
+     * Display a listing of the resource.
+     */
     public function index(Request $request)
     {
         $addresses = $request->user()->addresses()->get();
 
         $response = [
-            'status' => true,
-            'message' => 'User Addresses',
+            'success' => true,
+            'message' => 'User addresses',
             'data' => [
-              "addresses" => $addresses
+                'addresses' => $addresses
             ]
         ];
 
         return response()->json($response);
     }
 
-
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
-        
         $request->validate([
             'street' => 'required',
             'number' => '',
@@ -38,59 +41,61 @@ class AddressController extends Controller
             'floor' => '',
             'door' => '',
         ]);
-
         $address = new Address($request->all());
+
         $request->user()->addresses()->save($address);
 
         $response = [
-            'status' => true,
+            'success' => true,
             'message' => 'Address created',
         ];
-
         return response()->json($response, 201);
     }
 
-
+    /**
+     * Display the specified resource.
+     */
     public function show(Request $request, $id)
     {
         $address = $request->user()->addresses()->find($id);
-
         if (!$address) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Address not found'
-            ], 404);
+            $response = [
+                'success' => false,
+                'message' => 'Address not found',
+            ];
+            return response()->json($response, 404);
         }
 
         $response = [
-            'status' => true,
+            'success' => true,
             'message' => 'Address found successfully',
             'data' => [
-              "address" => $address
+                'address' => $address
             ]
         ];
 
         return response()->json($response);
     }
 
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy(Request $request, $id)
     {
         $address = $request->user()->addresses()->find($id);
-
         if (!$address) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Address not found'
-            ], 404);
+            $response = [
+                'success' => false,
+                'message' => 'Address not found',
+            ];
+            return response()->json($response, 404);
         }
 
         $address->delete();
-
         $response = [
-            'status' => true,
-            'message' => 'Address deleted successfully',
+            'success' => true,
+            'message' => 'Address deleted',
         ];
-
         return response()->json($response);
     }
 }

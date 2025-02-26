@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Filament\Admin\Resources;
+
 use App\Filament\Admin\Resources\CategoryResource\Pages;
 use App\Filament\Admin\Resources\CategoryResource\RelationManagers;
 use App\Models\Category;
@@ -16,9 +18,13 @@ use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-squares-2x2';
+
     protected static ?string $navigationGroup = "Operations";
+    
     protected static ?int $navigationSort = 2;
+
     public static function form(Form $form): Form
     {
         return $form
@@ -51,9 +57,7 @@ class CategoryResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-
             ]);
-
     }
 
     public static function getRelations(): array

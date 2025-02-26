@@ -1,8 +1,13 @@
 <?php
+
 namespace Database\Seeders;
-use App\Enums\RoleCode;
+
+use App\Enum\RoleCode;
+use App\Models\Role;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
+
 class MerchantSeeder extends Seeder
 {
     /**
@@ -10,9 +15,10 @@ class MerchantSeeder extends Seeder
      */
     public function run(): void
     {
-        $merchant = User::whereEmail('merchant@test.com')->first();
-        if ($merchant) {
-            $merchant->roles()->attach(RoleCode::merchant);
+        $lefteris = User::whereEmail('lefteris@test.com')->first();
+
+        if ($lefteris) {
+            $lefteris->roles()->attach(RoleCode::merchant);
         }
     }
 }

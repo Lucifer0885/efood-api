@@ -2,23 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Helpers\Device;
-use App\Enums\RoleCode;
-use App\Models\Role;
-use App\Models\RoleUser;
+use App\Enum\RoleCode;
 
 class AuthController extends Controller
 {
 
     public function register(Request $request)
     {
-        if($request->role && $request->role == 'admin') {
+        if ($request->role && $request->role == 'admin') {
             return response()->json([
-                'status' => false,
-                'message' => 'Page not found',
+                'success' => false,
+                'message' => 'Page not found'
             ], 404);
         }
 
@@ -26,34 +25,31 @@ class AuthController extends Controller
             'name' => 'required|string',
             'email' => 'required|string|unique:users,email',
             'password' => 'required|string|min:6',
-            'phone' => 'string',
+            'phone' => 'string'
         ]);
 
         $user = User::create([
             'name' => $fields['name'],
             'email' => $fields['email'],
-            'password' => bcrypt($fields['password']),
-            'phone' => isset($fields['phone'] ) ?? $fields['phone'],
+            'phone' => $fields['phone'] ?? null,
+            'password' => bcrypt($fields['password'])
         ]);
 
-        if($request->role){
+        if ($request->role) {
             $role = Role::find(RoleCode::{$request->role});
-            if($role){
-                RoleUser::create([
-                    'user_id' => $user->id,
-                    'role_id' => $role->id,
-                ]);
+            if ($role) {
+                $user->roles()->attach($role->id);
             }
         }
 
         $token = $user->createToken(Device::tokenName())->plainTextToken;
 
         $response = [
-            'status' => true,
-            'message' => 'User created successfully',
+            'success' => true,
+            'message' => 'User created',
             'data' => [
-              'user' => $user,
-              'token' => $token
+                'user' => $user,
+                'token' => $token
             ]
         ];
 
@@ -67,41 +63,42 @@ class AuthController extends Controller
             'password' => 'required|string|min:6'
         ]);
 
+        // Check email
         $user = User::where('email', $fields['email'])->first();
 
+        // Check password
         if (!$user) {
             return response()->json([
-                'status' => false,
+                'success' => false,
                 'message' => 'Bad creds'
             ], 401);
         }
 
         if (!Hash::check($fields['password'], $user->password)) {
             return response()->json([
-                'status' => false,
+                'success' => false,
                 'message' => 'Bad creds'
             ], 401);
         }
 
-        if ($request->role){
+        if ($request->role) {
             $role = $user->roles()->where('role_id', RoleCode::{$request->role})->first();
             if (!$role) {
                 return response()->json([
-                    'status' => false,
+                    'success' => false,
                     'message' => 'Unauthorized'
                 ], 401);
-            }        
+            }
         }
 
         $token = $user->createToken(Device::tokenName())->plainTextToken;
 
         $response = [
-            'status' => true,
-            'message' => 'User login',
+            'success' => true,
+            'message' => 'User logged in',
             'data' => [
-              'user' => $user,
-              'token' => $token,
-              'role' => $request->role,
+                'user' => $user,
+                'token' => $token
             ]
         ];
 
@@ -113,7 +110,7 @@ class AuthController extends Controller
         $request->user()->currentAccessToken()->delete();
 
         return response()->json([
-            'status' => true,
+            'success' => true,
             'message' => 'Logged out'
         ]);
     }

@@ -13,6 +13,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
+
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
@@ -27,16 +28,17 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                Forms\Components\TextInput::make("name")
                     ->required(),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->required(),
-                Forms\Components\TextInput::make('password')
-                    ->password()
+                Forms\Components\TextInput::make("email")
                     ->required()
-                    ->hiddenOn("edit"),
-                Forms\Components\TextInput::make('phone')->tel(),
+                    ->email(),
+                Forms\Components\TextInput::make("password")
+                    ->hiddenOn("edit")
+                    ->required()
+                    ->password(),
+                Forms\Components\TextInput::make("phone")
+                    ->tel(),
             ]);
     }
 
@@ -45,35 +47,33 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('phone')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->searchable()
+                    ->sortable()
                     ->dateTime(),
-
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ])
-            ->searchPlaceholder('Search (name, email)');
+            ]);
     }
 
     public static function getRelations(): array
     {
         return [
-            RelationManagers\AddressesRelationManager::class,
+            RelationManagers\AddressesRelationManager::class
         ];
     }
 

@@ -126,10 +126,11 @@ class StoreSeeder extends Seeder
         ];
 
         foreach ($stores as $store) {
-            $this->command->info('Seeding store: '.$store['name']['el']);
+            $this->command->info('Seeding store: ' . $store['name']['el']);
             Store::create($store);
         }
 
         $this->command->info('Stores seeded!');
+
     }
 }

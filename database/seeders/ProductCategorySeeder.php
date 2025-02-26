@@ -8,11 +8,13 @@ use App\Models\ProductCategory;
 
 class ProductCategorySeeder extends Seeder
 {
+
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
+
         $categories = [
             ["el" => "Νηστίσιμο menu", "en" => "Fasting menu"],
             ["el" => "Ορεκτικά", "en" => "Appetizers"],

@@ -10,6 +10,7 @@ class ProductCategory extends Model
     use HasTranslations;
 
     protected $translatable = ['name'];
+
     protected $fillable = [
         'name',
         'store_id',

@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('provider')->nullable();
-            $table->string('provider_id')->nullable();
-            $table->string('avatar')->nullable();
-            $table->string('phone')->nullable();
+        Schema::table('stores', function (Blueprint $table) {
+            $table->decimal('delivery_range')->after('working_hours')->default(0);
         });
     }
 
@@ -24,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
+        Schema::table('stores', function (Blueprint $table) {
+            $table->dropColumn('delivery_range');
         });
     }
 };

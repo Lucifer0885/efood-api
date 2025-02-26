@@ -1,7 +1,10 @@
 <?php
+
 namespace App\Http\Controllers;
+
 use App\Helpers\Device;
 use Illuminate\Http\Request;
+
 class UserController extends Controller
 {
     public function me(Request $request)
@@ -19,13 +22,16 @@ class UserController extends Controller
                 'last_used_at' => $token->last_used_at
             ];
         }
+
         return response()->json([
             'tokens' => $tokens
         ]);
     }
+
     public function revokeAllTokens(Request $request)
     {
         $request->user()->tokens()->delete();
+
         return response()->json([
             'message' => 'Tokens revoked, you will be logged out from all devices'
         ]);

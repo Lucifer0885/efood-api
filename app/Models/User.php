@@ -3,15 +3,15 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Filament\Models\Contracts\FilamentUser;
-use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Enums\RoleCode;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
+use App\Enum\RoleCode;
 
 class User extends Authenticatable implements FilamentUser
 {
@@ -55,9 +55,9 @@ class User extends Authenticatable implements FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        $panelId = $panel->getId();
+        $panel_id = $panel->getId(); // "admin" or "merchant"
 
-        if ($panelId === 'admin') {
+        if ($panel_id === "admin") {
             $role = $this->roles()->where('role_id', RoleCode::admin)->first();
             return !is_null($role);
         }
@@ -74,5 +74,4 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->hasMany(Address::class);
     }
-
 }

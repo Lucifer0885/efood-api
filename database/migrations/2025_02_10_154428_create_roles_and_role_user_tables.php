@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('roles', function (Blueprint $table) {
             $table->id();
             $table->json('name');
-            $table->json('description')->nullable();
-            $table->decimal('price',7,2);
-            $table->foreignId('store_id');
-            $table->foreignId('product_category_id');
-            $table->boolean('active')->default(true);
-            $table->unsignedSmallInteger('sort')->default(0);
+            $table->timestamps();
+        });
+
+        Schema::create('role_user', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedInteger('role_id');
+            $table->unsignedInteger('user_id');
             $table->timestamps();
         });
     }
@@ -29,6 +30,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('roles');
+        Schema::dropIfExists('role_user');
     }
 };

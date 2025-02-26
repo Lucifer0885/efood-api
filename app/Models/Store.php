@@ -4,36 +4,36 @@ namespace App\Models;
 
 use App\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Store extends Model
 {
+
     use HasTranslations;
 
     protected $fillable = [
         'name',
         'address',
         'phone',
-        'minimun_cart_value',
+        'minimum_cart_value',
         'latitude',
         'longitude',
         'working_hours',
-        'delivery_range',
-        'active'
+        'delivery_range', // Kilometers
+        'active',
     ];
-        
-    protected $translatable = ['name', 'address', 'working_hours'];
-    
+
+    protected $translatable = ['name', 'address'];
+
+    // protected $appends = ['logo', 'cover'];
+
+    protected $hidden = ['pivot'];
+
     protected $casts = [
         'working_hours' => 'array',
         'active' => 'boolean',
     ];
 
-    protected $hidden = ['pivot'];  
-
-    // protected $appends = ['logo', 'cover'];
-
-    public function categories(): BelongsToMany
+    public function categories()
     {
         return $this->belongsToMany(Category::class);
     }
@@ -42,7 +42,7 @@ class Store extends Model
     {
         return $this->hasMany(ProductCategory::class);
     }
-
+    
     public function products()
     {
         return $this->hasMany(Product::class);

@@ -7,10 +7,11 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+ 
     public function index()
     {
         $categories = Category::query()
-            ->select(["id", "name"])
+            ->select(['id', 'name'])
             ->orderBy('name')
             ->get();
 
@@ -19,7 +20,7 @@ class CategoryController extends Controller
             'message' => 'List of all categories',
             'categories' => $categories
         ];
-
         return response()->json($response);
     }
+
 }

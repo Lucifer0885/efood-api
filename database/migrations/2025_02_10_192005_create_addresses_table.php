@@ -17,13 +17,16 @@ return new class extends Migration
             $table->string('number')->nullable();
             $table->string('city')->nullable();
             $table->string('postal_code')->nullable();
-            $table->decimal('latitude',10,2);
-            $table->decimal('longitude',11,2);
-            $table->string('floor')->nullable();
+            $table->decimal('latitude', 10, 8);
+            $table->decimal('longitude', 11, 8);
+
             $table->string('phone')->nullable();
+            $table->string('floor')->nullable();
             $table->string('door')->nullable();
+
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+
             $table->timestamps();
         });
     }

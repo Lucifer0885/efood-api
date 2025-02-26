@@ -10,8 +10,8 @@ class StoreController extends Controller
 {
     public function index(Request $request)
     {
-        $lat = $request->coordinates['latitude'] ?? 40.6449329;
-        $lng = $request->coordinates['longitude'] ?? 22.9416259;
+        $lat = $request->coordinates['latitude'];
+        $lng = $request->coordinates['longitude'];
 
         $query = Store::query()
             ->with([
@@ -64,6 +64,18 @@ class StoreController extends Controller
         }
 
         $stores = $query->get();
+
+        // $stores = $stores->toArray();
+        // foreach ($stores as $key => $store) {
+        //     $categories = [];
+        //     foreach ($store['categories'] as $category) {
+        //         $categories[] = [
+        //             'id' => $category['id'],
+        //             'name' => $category['name'],
+        //         ];
+        //     }
+        //     $stores[$key]['categories'] = $categories;
+        // }
 
         $response = [
             'success' => true,

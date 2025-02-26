@@ -17,15 +17,14 @@ class CoordinatesDetector
     {
         $coordinates = [
             'latitude' => 40.6449329,
-            'longitude' => 22.9416259,
+            'longitude' => 22.9416259
         ];
 
         if ($request->hasHeader('X-Location')) {
             $location = explode(',', $request->header('X-Location'));
-
             $coordinates = [
                 'latitude' => $location[0],
-                'longitude' => $location[1],
+                'longitude' => $location[1]
             ];
         }
 
