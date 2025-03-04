@@ -8,10 +8,11 @@ use Illuminate\Support\Facades\DB;
 
 class StoreController extends Controller
 {
+
     public function index(Request $request)
     {
-        $lat = $request->coordinates['latitude'];
-        $lng = $request->coordinates['longitude'];
+        $lat = $request->coordinates['latitude'] ?? 40.6449329;
+        $lng = $request->coordinates['longitude'] ?? 22.9416259;
 
         $query = Store::query()
             ->with([
@@ -87,10 +88,9 @@ class StoreController extends Controller
         return response()->json($response);
     }
 
-
     public function show($id, Request $request) {
-        $lat = $request->coordinates['latitude'];
-        $lng = $request->coordinates['longitude'];
+        $lat = $request->coordinates['latitude'] ?? 40.6449329;
+        $lng = $request->coordinates['longitude'] ?? 22.9416259;
 
         $query = Store::query();
         $query->select(
