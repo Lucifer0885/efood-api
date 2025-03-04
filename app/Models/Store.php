@@ -21,6 +21,7 @@ class Store extends Model implements HasMedia
         'minimum_cart_value',
         'latitude',
         'longitude',
+        'location',
         'working_hours',
         'delivery_range', // Kilometers
         'active',
@@ -54,6 +55,11 @@ class Store extends Model implements HasMedia
     public function products()
     {
         return $this->hasMany(Product::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function getLogoAttribute()

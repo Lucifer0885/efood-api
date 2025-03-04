@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Filament\Merchant\Resources;
+namespace App\Filament\Admin\Resources;
 
-use App\Filament\Merchant\Resources\StoreResource\Pages;
-use App\Filament\Merchant\Resources\StoreResource\RelationManagers;
+use App\Filament\Admin\Resources\StoreResource\Pages;
+use App\Filament\Admin\Resources\StoreResource\RelationManagers;
 use App\Models\Store;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -22,11 +22,9 @@ class StoreResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
 
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->where('user_id', auth()->user()->id);
-    }
+    protected static ?string $navigationGroup = "Store";
+
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
@@ -91,6 +89,10 @@ class StoreResource extends Resource
             ->columns([
                 SpatieMediaLibraryImageColumn::make('logo')
                     ->collection("logo"),
+                Tables\Columns\TextColumn::make('user.name')
+                    ->description(fn (Store $store) => $store->user->email)
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
