@@ -97,8 +97,7 @@ class StoreResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('address'),
-                Tables\Columns\TextColumn::make('categories.name')
-                    ->limitList(2),
+                Tables\Columns\TextColumn::make('categories.name'),
                 Tables\Columns\TextColumn::make('phone'),
                 Tables\Columns\TextColumn::make('minimum_cart_value')
                     ->money("EUR"),
